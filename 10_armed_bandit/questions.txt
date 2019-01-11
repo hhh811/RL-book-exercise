@@ -1,0 +1,9 @@
+# question about gradient bandit algorithm
+# When eg. 2 actios' value are initialized to each other,
+# first several actions are picked very randomly, if the 2nd-
+# big-value action is picked often and the 1st-big-value aciton
+# is picked for very few times, the pi(2nd-big-value action)
+# will grow fast to close to 1. Then for the rest of the steps,
+# most of the actions picked will be the 2nd-big-value action,
+# it will be almost impossible for the 1st-big-value action to get
+# picked and enhance its preference.
