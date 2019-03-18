@@ -44,7 +44,7 @@ class Agent(object):
 			#print('hit! replace to %s' % self.P)
 			self.V = np.array([0, 0])
 		if self.Track.Reach_Finish_Line(self.P):    #注意这里numpy数组的比较 不能简单用 in
-			next_reward = 0
+			next_reward = 1
 			finished = True
 			#print('!!! Finished !!!')
 			#print('finished position: %s' % self.P)
@@ -62,7 +62,6 @@ class Agent(object):
 		self.rewards_record = []
 	
 	def run(self):
-		track = self.Track
 		#print('start line %s' % self.Track.Start_Line)
 		self.reset()
 		result = False
@@ -73,7 +72,7 @@ class Agent(object):
 			self.actions_record.append(action)
 			finished = self.step(action)
 			if finished: 
-				#print('!!! Finished !!!  %s steps taken' % (i+1))
+				print('!!! Finished !!!  %s steps taken' % (i+1))
 				result = i+1
 				break
 		#print('Too many steps, didn`t reach')
@@ -91,7 +90,7 @@ class Agent(object):
 			self.C_s_a[s_a] = self.C_s_a.get(s_a, 0) + W
 			self.Q_s_a[s_a] = self.Q_s_a.get(s_a, 0) + W / (self.C_s_a.get(s_a, 0) + 0.01) * (G - self.Q_s_a.get(s_a, 0))
 			qs_temp = self.get_qs_temp(s)
-			pi_st = greedy_policy(qs_temp, self.Actions, epsilon=0)
+			pi_st = greedy_policy(qs_temp, self.Actions, epsilon=0, TIES_BROKEN='CONSISTENT')
 			if any(pi_st != a): break
 			b_at_st = greedy_policy(qs_temp, self.Actions, action_taken=a, TIES_BROKEN='CONSISTENT')
 			W = W / (b_at_st + 0.0001)
